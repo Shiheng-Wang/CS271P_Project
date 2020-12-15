@@ -1,0 +1,23 @@
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Graph
+{
+private:
+    int n;
+    vector<vector<float>> distance;
+public:
+    Graph(int n);
+    ~Graph();
+    void set_dis(int i, int j, int dis); // Set the distance between i and j
+    float get_dis(int i, int j);
+    int get_city_num();
+};
+
+int h(int node);
+
+void BnBHelper(int& start, int cur, vector<bool>& visited);
+
+int BnBDFS();
