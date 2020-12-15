@@ -7,7 +7,7 @@ class Graph
 {
 private:
     int n;
-    vector<vector<float>> distance;
+    vector<vector<float> > distance;
 public:
     Graph(int n);
     ~Graph();

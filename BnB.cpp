@@ -18,11 +18,22 @@ bool allVisited(vector<bool> &visited)
     return true;
 }
 
-int h(int node, Graph &graph)
+float h(int node, Graph &graph)
 {
+    float max = numeric_limits<int>::max();
+    for (int i = 0; i < graph.get_city_num(); i++)
+    {
+        if (i != node)
+        {
+            float dis = graph.get_dis(node, i);
+            if (dis < max)
+                max = dis;
+        }
+    }
+    return max;
 }
 
-void BnBHelper(int start, int cur, vector<bool>& visited, Graph &graph)
+void BnBHelper(int start, int cur, vector<bool> &visited, Graph &graph)
 {
     if (cur == start && allVisited(visited))
     {
@@ -37,7 +48,8 @@ void BnBHelper(int start, int cur, vector<bool>& visited, Graph &graph)
     {
         if (visited[i])
             continue;
-        if (cost + h(cur, graph) < UB) {
+        if (cost + h(cur, graph) < UB)
+        {
             path.push(i);
             visited[i] = true;
             cost += graph.get_dis(cur, i);
@@ -45,7 +57,7 @@ void BnBHelper(int start, int cur, vector<bool>& visited, Graph &graph)
             cost -= graph.get_dis(cur, i);
             visited[i] = false;
             path.pop();
-        } 
+        }
     }
 }
 
