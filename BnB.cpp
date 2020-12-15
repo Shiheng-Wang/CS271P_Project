@@ -1,33 +1,16 @@
 #include <vector>
-#include "BnB.h"
+#include <limits>
+#include "Graph.h"
 
 using namespace std;
 
-Graph::Graph(int n)
-{
-    this->n = n;
-    for (int i = 0; i < n; i++) {
-        vector<float> cur(n, 0);
-        distance.push_back(cur);
-    }
+void BnBHelper(int start, int cur, int UB, vector<bool> visited) {
+
 }
 
-void Graph::set_dis(int i, int j, int dis) {
-    if (i == j) return;
-    else if (i < j)
-        distance[i][j] = dis;
-    else
-        distance[j][i] = dis;
-}
-
-float Graph::get_dis(int i, int j) {
-    if (i == j) return 0.0;
-    else if (i < j)
-        return distance[i][j];
-    else
-        return distance[j][i];
-}
-
-int Graph::get_city_num() {
-    return this->n;
+int BnBDFS(Graph graph) {
+    int UB = numeric_limits<float>::max();
+    vector<bool> visited(graph.get_city_num(), false);
+    BnBHelper(0, 0, UB, visited);
+    return UB;
 }

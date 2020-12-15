@@ -15,9 +15,3 @@ public:
     float get_dis(int i, int j);
     int get_city_num();
 };
-
-int h(int node);
-
-void BnBHelper(int& start, int cur, vector<bool>& visited);
-
-int BnBDFS();
