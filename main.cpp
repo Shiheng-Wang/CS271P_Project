@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include "Graph.h"
+#include "BnB.h"
 
 using namespace std;
 
@@ -44,6 +45,7 @@ int main(int argc, char *argv[])
     myFile.close();
 
     // Test BnB DFS
+    float BnBresult = BnBDFS(graph);
 
     // Test SLS
 

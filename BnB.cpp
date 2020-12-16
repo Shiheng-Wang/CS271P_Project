@@ -2,6 +2,7 @@
 #include <limits>
 #include <stack>
 #include "Graph.h"
+#include "BnB.h"
 
 using namespace std;
 
@@ -61,7 +62,7 @@ void BnBHelper(int start, int cur, vector<bool> &visited, Graph &graph)
     }
 }
 
-int BnBDFS(Graph &graph)
+float BnBDFS(Graph &graph)
 {
     UB = numeric_limits<float>::max();
     cost = 0;

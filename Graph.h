@@ -1,3 +1,6 @@
+#ifndef GRAPH_H
+#define GRAPH_H
+
 #include <vector>
 #include <string>
 
@@ -15,3 +18,5 @@ public:
     float get_dis(int i, int j);
     int get_city_num();
 };
+
+#endif
