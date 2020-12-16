@@ -5,8 +5,10 @@
 
 using namespace std;
 
-int main(int argc, char* argv[]) {
-    if (argc != 2) {
+int main(int argc, char *argv[])
+{
+    if (argc != 2)
+    {
         cout << "Type the test file name as the command argument\n";
         exit(0);
     }
@@ -21,8 +23,10 @@ int main(int argc, char* argv[]) {
     Graph graph(size);
     int i = 0;
     string dis;
-    while (getline(myFile, line)) {
-        for (int j = 0; j < size; j++) {
+    while (getline(myFile, line))
+    {
+        for (int j = 0; j < size; j++)
+        {
             int index = line.find(' ');
             dis = line.substr(0, index);
             graph.set_dis(i, j, stoi(dis));
