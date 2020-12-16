@@ -23,17 +23,19 @@ int main(int argc, char *argv[])
     Graph graph(size);
     int i = 0;
     string dis;
+    int index;
     while (getline(myFile, line))
     {
         for (int j = 0; j < size; j++)
         {
-            int index = line.find(' ');
+            float cur_dis = stof(dis);
+            index = line.find(' ');
             if (index == string::npos) {
-                graph.set_dis(i, j, stof(dis));
+                graph.set_dis(i, j, cur_dis);
             }
             else {
                 dis = line.substr(0, index);
-                graph.set_dis(i, j, stof(dis));
+                graph.set_dis(i, j, cur_dis);
                 line = line.substr(index + 1);
             }
         }
