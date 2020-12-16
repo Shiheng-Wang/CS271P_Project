@@ -28,9 +28,14 @@ int main(int argc, char *argv[])
         for (int j = 0; j < size; j++)
         {
             int index = line.find(' ');
-            dis = line.substr(0, index);
-            graph.set_dis(i, j, stoi(dis));
-            line = line.substr(index + 1);
+            if (index == string::npos) {
+                graph.set_dis(i, j, stof(dis));
+            }
+            else {
+                dis = line.substr(0, index);
+                graph.set_dis(i, j, stof(dis));
+                line = line.substr(index + 1);
+            }
         }
         i++;
     }

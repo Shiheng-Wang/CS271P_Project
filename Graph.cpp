@@ -12,7 +12,7 @@ Graph::Graph(int n)
     }
 }
 
-void Graph::set_dis(int i, int j, int dis) {
+void Graph::set_dis(int i, int j, float dis) {
     if (i == j) return;
         this->distance[i][j] = dis;
 }
