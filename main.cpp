@@ -9,12 +9,6 @@ using namespace std;
 
 int main()
 {
-    // if (argc != 2)
-    // {
-    //     cout << "Type the test file name as the command argument\n";
-    //     exit(0);
-    // }
-
     // Build a Graph object
     ifstream myFile;
     myFile.open("./tests/tsp-problem-25-125-100-25-1.txt");
