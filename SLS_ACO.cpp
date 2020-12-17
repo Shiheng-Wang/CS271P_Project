@@ -31,7 +31,7 @@ initialize(Graph& graph) {
 	Tau.resize(n, vector<double>(n));
 	Tabu.resize(ant, vector<int>(n));
 	R_best.resize(Iter_max, vector<int>(n));
-	for (int i = 0; i < n; i++)			//��ʼ�� D[n][n]
+	for (int i = 0; i < n; i++)
 	{
 		vector<double> temp(n, 0);
 		vector<double> temp2(n, 1);
@@ -39,7 +39,6 @@ initialize(Graph& graph) {
 		Tau.push_back(temp2);
 	}
 
-	//��ʼ�� ethea[n][n] 
 	for (int i = 0; i < n; i++) {
 		vector<double> temp;
 		for (int j = 0; j < n; j++) {
@@ -47,7 +46,7 @@ initialize(Graph& graph) {
 		}
 		ethea.push_back(temp);
 	}
-	//��ʼ�����ɱ� Tabu
+	
 	for (int i = 0; i < ant; i++) {
 		vector<int> temp(n, 0);
 		Tabu.push_back(temp);
@@ -73,7 +72,7 @@ inline double
 calculate_pk(vector<double>& P, vector<int>& I, vector<int> &visited) {
 	double Psum = 0.0;
 	for (int k = 0; k < P.size(); k++) {  
-		P[k] = pow(Tau[visited.back()][I[k]], Alpha) * pow(ethea[visited.back()][I[k]], beta); // p_xy^k�ϰ벿��
+		P[k] = pow(Tau[visited.back()][I[k]], Alpha) * pow(ethea[visited.back()][I[k]], beta);
 		Psum += P[k];
 	}
 	return Psum;
@@ -157,7 +156,7 @@ find_min_path_and_draw(int iter) {
 	cout << "The number of iteration is " << min_L_index << endl;
 	cout << "The Shortest route is�� " << endl << "start";
 
-	for (int i = 0; i < n; i++)		//���е����е�����·��
+	for (int i = 0; i < n; i++)
 	{
 		Shortest_Route[i] = R_best[min_L_index][i];
 		cout << " -> " << Shortest_Route[i];
