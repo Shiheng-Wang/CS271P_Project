@@ -5,7 +5,7 @@
  Traveling Salesman problem with BnB DFS and SLS (Ant Colony)
 
 ## Compile:
-    g++ main.cpp BnB.cpp Graph.cpp -o main
+    g++ main.cpp BnB.cpp SLS_ACO.cpp Graph.cpp -o main
 
 ## Run:
     ./main
