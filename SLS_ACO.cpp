@@ -1,56 +1,69 @@
-#include<iostream>
-#include<fstream>
-#include<stdlib.h>
-#include<vector>
-#include<algorithm>
-#include<string>
-#include<time.h>
+#include <iostream>
+#include <fstream>
+#include <stdlib.h>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <time.h>
+#include "Graph.h"
+
 using namespace std;
 
-const int ant = 100; //ÂìÒÏµÄÊýÁ¿ ºóÆÚÐèÒªµ÷²Î 
-const int n = 99; // ³ÇÊÐµÄÊýÁ¿
-const int Iter_max = 1000; // µü´ú´ÎÊý
-const double Alpha = 1; // ±íÕ÷ÐÅÏ¢ËØÖØÒª²ÎÊý, ºóÆÚÐèÒª½øÐÐµ÷²Î
-const double beta = 5; //±íÕ÷Æô·¢Ê½Òò×ÓÖØÒª³Ì¶È²ÎÊý, ºóÆÚÐèÒª½øÐÐµ÷²Î
-const double rho = 0.1; //Õô·¢ÏµÊý ºóÆÚÐèÒªµ÷²Î 
-const double Q = 100; //ÐÅÏ¢ËØÔö¼ÓÇ¿¶ÈÏµÊý ºóÆÚÐèÒªµ÷²Î
+const int ant = 100; //ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ 
+int n;
+// const int n = 99; // ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½
+const int Iter_max = 1000; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+const double Alpha = 1; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½
+const double beta = 5; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ì¶È²ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½
+const double rho = 0.1; //ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ 
+const double Q = 100; //ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½Ïµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½
 
-double C[n][n];
-double D[n][n]; //Í¼µÄÁÙ½Ó¾ØÕó
-double ethea[n][n]; // Æô·¢Ê½Òò×Ó, ÕâÀïÓÃµÄ1/dxy 
-double deltatau[n][n]; //Æô·¢Ê½Òò×ÓµÄ±ä»¯Á¿
-double Tau[n][n]; //Â·¾¶ÉÏÐÅÏ¢ËØµÄÅ¨¶È
-int Tabu[ant][n]; //½û¼É±í ´æ´¢×ß¹ýµÄÂ·¾¶ 
+vector<vector<double> > C, ethea, deltatau, Tau;
+vector<vector<int> > Tabu, R_best;
 
-double L_best[Iter_max]; //´æ´¢Ã¿´Îµü´úµÄ×î¶ÌÂ·¾¶³¤¶È
-double L_avg[Iter_max]; //´æ´¢Ã¿´Îµü´úµÄÆ½¾ùÂ·¾¶³¤¶È
-int R_best[Iter_max][n]; // ´æ´¢Ã¿´Îµü´úµÄ×î¼ÑÂ·¾¶ 
+// double C[n][n];
+// double D[n][n]; //Í¼ï¿½ï¿½ï¿½Ù½Ó¾ï¿½ï¿½ï¿½
+// double ethea[n][n]; // ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½1/dxy 
+// double deltatau[n][n]; //ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ÓµÄ±ä»¯ï¿½ï¿½
+// double Tau[n][n]; //Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Øµï¿½Å¨ï¿½ï¿½
+// int Tabu[ant][n]; //ï¿½ï¿½ï¿½É±ï¿½ ï¿½æ´¢ï¿½ß¹ï¿½ï¿½ï¿½Â·ï¿½ï¿½ 
+
+double L_best[Iter_max]; //ï¿½æ´¢Ã¿ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+double L_avg[Iter_max]; //ï¿½æ´¢Ã¿ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+// int R_best[Iter_max][n]; // ï¿½æ´¢Ã¿ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ 
+
+// inline void
+// input_file(const string &textfile) {
+// 	ifstream file;
+// 	string line;
+// 	size_t pos = 0;
+// 	string delimiter = " ";
+// 	vector<string> token;
+// 	file.open(textfile);
+// 	if (!file) cout << "Unable to open file." << endl;
+// 	int line_number = 0;
+// 	while (getline(file, line)) {
+// 		while ((pos = line.find(delimiter)) != string::npos) {
+// 			token.push_back(line.substr(0, pos));
+// 			line.erase(0, pos + delimiter.length());
+// 		}
+// 		for (int i = 0; i < token.size(); i++) C[line_number][i] = stod(token[i]);
+// 		line_number++;
+// 		token.clear();
+// 	}
+// }
 
 inline void
-input_file(const string &textfile) {
-	ifstream file;
-	string line;
-	size_t pos = 0;
-	string delimiter = " ";
-	vector<string> token;
-	file.open(textfile);
-	if (!file) cout << "Unable to open file." << endl;
-	int line_number = 0;
-	while (getline(file, line)) {
-		while ((pos = line.find(delimiter)) != string::npos) {
-			token.push_back(line.substr(0, pos));
-			line.erase(0, pos + delimiter.length());
-		}
-		for (int i = 0; i < token.size(); i++) C[line_number][i] = stod(token[i]);
-		line_number++;
-		token.clear();
-	}
-}
-
-inline void
-initialize() {
-	input_file("Text.txt");
-	for (int i = 0; i < n; i++)			//³õÊ¼»¯ D[n][n]
+initialize(Graph &graph) {
+	// input_file("Text.txt");
+	n = graph.get_city_num();
+	C.resize(n, vector<double>(n));
+	ethea.resize(n, vector<double>(n));
+	deltatau.resize(n, vector<double>(n));
+	Tau.resize(n, vector<double>(n));
+	Tabu.resize(ant, vector<int>(n));
+	R_best.resize(Iter_max, vector<int>(n));
+	for (int i = 0; i < n; i++)			//ï¿½ï¿½Ê¼ï¿½ï¿½ D[n][n]
 	{
 		for (int j = 0; j < n; j++)
 		{
@@ -63,29 +76,29 @@ initialize() {
 		}
 	}
 
-	//³õÊ¼»¯ ethea[n][n] 
+	//ï¿½ï¿½Ê¼ï¿½ï¿½ ethea[n][n] 
 	for (int i = 0; i < n; i++)		
 		for (int j = 0; j < n; j++) {
 			ethea[i][j] = 1.0 / D[i][j];
 		}
 
-	//³õÊ¼»¯½û¼É±í Tabu
+	//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½É±ï¿½ Tabu
 	for (int i=0;i<ant;i++)
 		for (int j=0;j<n;j++)
-			Tabu[i][j] = 0; //ËùÓÐ½û¼É±íÎª0
+			Tabu[i][j] = 0; //ï¿½ï¿½ï¿½Ð½ï¿½ï¿½É±ï¿½Îª0
 }
 
-//Ëæ¼´º¯Êý Éú³ÉlowerºÍuperÖ®¼äµÄÒ»¸ödoubleÀàÐÍËæ»úÊý
+//ï¿½æ¼´ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½lowerï¿½ï¿½uperÖ®ï¿½ï¿½ï¿½Ò»ï¿½ï¿½doubleï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 inline double
 rnd(double lower, double upper) { return (rand() / (double)RAND_MAX * (upper - lower) + lower); }
 
 inline void
 separate_visited_not_visited(int i, int j, vector<int> &visited, vector<int> &I, vector<double> &P) {
-	for (int k = 0; k < j; k++) visited.push_back(Tabu[i][k]); // °ÑÒÑ¾­È¥¹ýµÄ³ÇÊÐÍÆÈëvisitedÖÐ
+	for (int k = 0; k < j; k++) visited.push_back(Tabu[i][k]); // ï¿½ï¿½ï¿½Ñ¾ï¿½È¥ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½visitedï¿½ï¿½
 	for (int k = 0; k < n; k++) {
-		if (find(visited.begin(), visited.end(), k) == visited.end()) { // ²éÕÒkÊÇ·ñÔÚvisitedÀï³öÏÖ
-			I.push_back(k); //°ÑÎ´ÕÒµ½µÄk´æÈë´ý·ÃÎÊ³ÇÊÐÖÐ
-			P.push_back(0.0); // ³õÊ¼»¯¸ÅÂÊ 
+		if (find(visited.begin(), visited.end(), k) == visited.end()) { // ï¿½ï¿½ï¿½ï¿½kï¿½Ç·ï¿½ï¿½ï¿½visitedï¿½ï¿½ï¿½ï¿½ï¿½
+			I.push_back(k); //ï¿½ï¿½Î´ï¿½Òµï¿½ï¿½ï¿½kï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê³ï¿½ï¿½ï¿½ï¿½ï¿½
+			P.push_back(0.0); // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 		}
 	}
 }
@@ -93,8 +106,8 @@ separate_visited_not_visited(int i, int j, vector<int> &visited, vector<int> &I,
 inline double
 calculate_pk(vector<double>& P, vector<int>& I, vector<int> &visited) {
 	double Psum = 0.0;
-	for (int k = 0; k < P.size(); k++) { //¼ÆËãÈ¥ÏÂÒ»¸ö³ÇÊÐµÄ¸ÅÂÊ 
-		P[k] = pow(Tau[visited.back()][I[k]], Alpha) * pow(ethea[visited.back()][I[k]], beta); // p_xy^kÉÏ°ë²¿·Ö
+	for (int k = 0; k < P.size(); k++) { //ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ¸ï¿½ï¿½ï¿½ 
+		P[k] = pow(Tau[visited.back()][I[k]], Alpha) * pow(ethea[visited.back()][I[k]], beta); // p_xy^kï¿½Ï°ë²¿ï¿½ï¿½
 		Psum += P[k];
 	}
 	return Psum;
@@ -102,7 +115,7 @@ calculate_pk(vector<double>& P, vector<int>& I, vector<int> &visited) {
 
 inline int
 get_next_city(double const Psum,vector<double>&P, vector<int> &I) {
-	double rate = rnd(0.0, Psum),choose =0.0; // Ëæ¼´Ò»¸ö¸ÅÂÊ 
+	double rate = rnd(0.0, Psum),choose =0.0; // ï¿½æ¼´Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 	for (int k = 0; k < P.size(); k++) {
 		choose += P[k];
 		if (choose >= rate) {
@@ -155,16 +168,16 @@ update_tau(vector<double> &L) {
 	{
 		for (int j = 0; j < n; j++)
 		{
-			Tau[i][j] = (1 - rho) * Tau[i][j] + deltatau[i][j];	//¿¼ÂÇÐÅÏ¢ËØ»Ó·¢£¬¸üÐÂºóµÄÐÅÏ¢ËØ
+			Tau[i][j] = (1 - rho) * Tau[i][j] + deltatau[i][j];	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Ø»Ó·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âºï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½
 		}
 	}
 }
 
 inline void
 find_min_path_and_draw(int iter) {
-	double min_L = L_best[0];			//ËùÓÐµü´úÖÐ×î¶Ì¾àÀë
-	int min_L_index = 0;				//ËùÓÐµü´úÖÐ×îÓÅÂ·¾¶µÄÏÂ±ê
-	int Shortest_Route[n];				//ËùÓÐµü´úÖÐµÄ×îÓÅÂ·¾¶
+	double min_L = L_best[0];			//ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½
+	int min_L_index = 0;				//ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½Â±ï¿½
+	int Shortest_Route[n];				//ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 	for (int i = 0; i < iter; i++)
 	{
 		if (L_best[i] < min_L)
@@ -176,32 +189,32 @@ find_min_path_and_draw(int iter) {
 
 	cout << "The length of the shortest route is " << min_L << endl;
 	cout << "The number of iteration is " << min_L_index << endl;
-	cout << "The Shortest route is£º " << endl << "start";
+	cout << "The Shortest route isï¿½ï¿½ " << endl << "start";
 
-	for (int i = 0; i < n; i++)		//ËùÓÐµü´úÖÐµÄ×îÓÅÂ·¾¶
+	for (int i = 0; i < n; i++)		//ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 	{
 		Shortest_Route[i] = R_best[min_L_index][i];
 		cout << " -> " << Shortest_Route[i];
 	}
 }
-//ÒÏÈºËã·¨
+//ï¿½ï¿½Èºï¿½ã·¨
 inline void
-ant_colony_optimization() {
-	//µÚÒ»²½½øÐÐ³õÊ¼»¯ 
-	initialize();
+ant_colony_optimization(Graph& graph) {
+	//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ð³ï¿½Ê¼ï¿½ï¿½ 
+	initialize(graph);
 	clock_t start, end, total;
 	int iter = 0;
 	total = 0;
 	while (iter < Iter_max && total<=900) {
 		cout << "total time is: " << total << endl;
 		start = clock();
-		for (int i = 0; i < ant; i++) Tabu[i][0] = 0; // ¼ÙÉè0Îª³õÊ¼³ÇÊÐ
+		for (int i = 0; i < ant; i++) Tabu[i][0] = 0; // ï¿½ï¿½ï¿½ï¿½0Îªï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
 		for (int j = 1; j < n; j++) {
 			for (int i = 0; i < ant; i++) {
-				vector<int> visited, I;  //µÚiÖ»ÂìÒÏ´ý·ÃÎÊµÄ³ÇÊÐ
-				vector<double> P; //µÚiÖ»ÂìÒÏ´ú·ÃÎÊ³ÇÊÐµÄ¸ÅÂÊ 
-				double Psum = 0.0; //¸ÅÂÊÖµºÏ
-				int to_visit; // ÏÂÒ»¸öÒªÈ¥µÄ³ÇÊÐ 
+				vector<int> visited, I;  //ï¿½ï¿½iÖ»ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ï¿½ÊµÄ³ï¿½ï¿½ï¿½
+				vector<double> P; //ï¿½ï¿½iÖ»ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ï¿½Ê³ï¿½ï¿½ÐµÄ¸ï¿½ï¿½ï¿½ 
+				double Psum = 0.0; //ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½
+				int to_visit; // ï¿½ï¿½Ò»ï¿½ï¿½ÒªÈ¥ï¿½Ä³ï¿½ï¿½ï¿½ 
 				separate_visited_not_visited(i, j, visited, I, P);
 				to_visit = rand() % I.size();
 				Psum = calculate_pk(P, I, visited);
@@ -210,14 +223,14 @@ ant_colony_optimization() {
 			}
 		}
 
-		//µÚËÄ²½ ¼ÇÂ¼Â·Ïß
+		//ï¿½ï¿½ï¿½Ä²ï¿½ ï¿½ï¿½Â¼Â·ï¿½ï¿½
 		vector<double> L;
 		calculate_path(L);
 		find_min_path(iter, L);
 		cout << iter << ": L_best is " << L_best[iter] << ' ' << "L_ave is " << L_avg[iter] << endl;
 		iter++;
 		update_tau(L);
-		for (int i = 0; i < ant; i++)			//½û¼É±íÇåÁã
+		for (int i = 0; i < ant; i++)			//ï¿½ï¿½ï¿½É±ï¿½ï¿½ï¿½ï¿½ï¿½
 			for (int j = 0; j < n; j++)
 				Tabu[i][j] = 0;
 		end = clock();
@@ -226,8 +239,8 @@ ant_colony_optimization() {
 		find_min_path_and_draw(iter);
 }
 
-int main() {
-	initialize();
-	ant_colony_optimization();
+int SLS_ACO(Graph& graph) {
+	initialize(graph);
+	ant_colony_optimization(graph);
 	return 0;
 }
