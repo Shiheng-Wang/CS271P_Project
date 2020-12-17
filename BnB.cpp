@@ -48,27 +48,15 @@ float h(int node, Graph &graph)
 
 void BnBHelper(int start, int cur, vector<bool> &visited, Graph &graph)
 {
-    // printPath(path);
     if (cur == start)
     {
         if (allVisited(visited) && cost < UB)
         {
             UB = cost;
             best_path = path;
-            // cout << "New UB = " << UB << "\n";
-            // cout << "New Best_path = ";
-            // printPath(path);
         }
-        // else if (allVisited(visited)) {
-        //     cout << "New path CUT = ";
-        //     printPath(path);
-        // }
         return;
     }
-
-    cur_duration = clock() - stime;
-    if ((float)cur_duration / CLOCKS_PER_SEC > 900)
-        return;
 
     int index = rand() % graph.get_city_num();
     while (visited[index] || index == cur)
