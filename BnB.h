@@ -2,8 +2,11 @@
 #define BNB_H
 
 #include <vector>
+#include <stack>
 #include "Graph.h"
 using namespace std;
+
+void printPath(stack<int> s);
 
 bool allVisited(vector<bool> &visited);
 

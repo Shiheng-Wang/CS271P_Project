@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <time.h>
 #include "Graph.h"
 #include "BnB.h"
 
@@ -44,8 +45,7 @@ int main()
     myFile.close();
 
     // Test BnB DFS
-    float BnBresult = BnBDFS(graph);
-    cout << BnBresult << "\n";
+    BnBDFS(graph);
 
     // Test SLS
 
