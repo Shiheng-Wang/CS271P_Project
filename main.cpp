@@ -1,22 +1,24 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <time.h>
 #include "Graph.h"
+#include "BnB.h"
 
 using namespace std;
 
-int main(int argc, char *argv[])
+int main()
 {
-    if (argc != 2)
-    {
-        cout << "Type the test file name as the command argument\n";
-        exit(0);
-    }
+    // if (argc != 2)
+    // {
+    //     cout << "Type the test file name as the command argument\n";
+    //     exit(0);
+    // }
 
     // Build a Graph object
-    string filename = argv[1];
     ifstream myFile;
-    myFile.open(filename);
+    myFile.open("./tests/tsp-problem-25-125-100-25-1.txt");
+    if (!myFile) cerr << "Could not open the file\n";
     string line;
     getline(myFile, line);
     int size = stoi(line);
@@ -28,14 +30,13 @@ int main(int argc, char *argv[])
     {
         for (int j = 0; j < size; j++)
         {
-            float cur_dis = stof(dis);
             index = line.find(' ');
             if (index == string::npos) {
-                graph.set_dis(i, j, cur_dis);
+                graph.set_dis(i, j, stof(dis));
             }
             else {
                 dis = line.substr(0, index);
-                graph.set_dis(i, j, cur_dis);
+                graph.set_dis(i, j, stof(dis));
                 line = line.substr(index + 1);
             }
         }
@@ -44,6 +45,7 @@ int main(int argc, char *argv[])
     myFile.close();
 
     // Test BnB DFS
+    BnBDFS(graph);
 
     // Test SLS
 
