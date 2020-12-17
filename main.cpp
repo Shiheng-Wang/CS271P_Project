@@ -4,6 +4,7 @@
 #include <time.h>
 #include "Graph.h"
 #include "BnB.h"
+#include "SLS_ACO.h"
 
 using namespace std;
 
@@ -42,6 +43,7 @@ int main()
     BnBDFS(graph);
 
     // Test SLS
+    SLS_ACO(graph);
 
     return 0;
 }

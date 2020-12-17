@@ -1,10 +1,12 @@
-#include<iostream>
-#include<fstream>
-#include<stdlib.h>
-#include<vector>
-#include<algorithm>
-#include<string>
-#include<time.h>
+#include <iostream>
+#include <fstream>
+#include <stdlib.h>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <time.h>
+#include <math.h>
+#include "Graph.h"
 using namespace std;
 
 int n;
@@ -21,7 +23,7 @@ double L_best[Iter_max];
 double L_avg[Iter_max];
 
 inline void
-initialize() {
+initialize(Graph& graph) {
 	n = graph.get_city_num();
 	C.resize(n, vector<double>(n));
 	ethea.resize(n, vector<double>(n));
@@ -29,7 +31,7 @@ initialize() {
 	Tau.resize(n, vector<double>(n));
 	Tabu.resize(ant, vector<int>(n));
 	R_best.resize(Iter_max, vector<int>(n));
-	for (int i = 0; i < n; i++)			//³õÊ¼»¯ D[n][n]
+	for (int i = 0; i < n; i++)			//ï¿½ï¿½Ê¼ï¿½ï¿½ D[n][n]
 	{
 		vector<double> temp(n, 0);
 		vector<double> temp2(n, 1);
@@ -37,7 +39,7 @@ initialize() {
 		Tau.push_back(temp2);
 	}
 
-	//³õÊ¼»¯ ethea[n][n] 
+	//ï¿½ï¿½Ê¼ï¿½ï¿½ ethea[n][n] 
 	for (int i = 0; i < n; i++) {
 		vector<double> temp;
 		for (int j = 0; j < n; j++) {
@@ -45,7 +47,7 @@ initialize() {
 		}
 		ethea.push_back(temp);
 	}
-	//³õÊ¼»¯½û¼É±í Tabu
+	//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½É±ï¿½ Tabu
 	for (int i = 0; i < ant; i++) {
 		vector<int> temp(n, 0);
 		Tabu.push_back(temp);
@@ -71,7 +73,7 @@ inline double
 calculate_pk(vector<double>& P, vector<int>& I, vector<int> &visited) {
 	double Psum = 0.0;
 	for (int k = 0; k < P.size(); k++) {  
-		P[k] = pow(Tau[visited.back()][I[k]], Alpha) * pow(ethea[visited.back()][I[k]], beta); // p_xy^kÉÏ°ë²¿·Ö
+		P[k] = pow(Tau[visited.back()][I[k]], Alpha) * pow(ethea[visited.back()][I[k]], beta); // p_xy^kï¿½Ï°ë²¿ï¿½ï¿½
 		Psum += P[k];
 	}
 	return Psum;
@@ -90,7 +92,7 @@ get_next_city(double const Psum,vector<double>&P, vector<int> &I) {
 }
 
 inline void
-calculate_path(vector<double> &L) {
+calculate_path(vector<double> &L, Graph& graph) {
 	for (int i = 0; i < ant; i++) L.push_back(0.0);
 	for (int i = 0; i < ant; i++)
 	{
@@ -153,9 +155,9 @@ find_min_path_and_draw(int iter) {
 
 	cout << "The length of the shortest route is " << min_L << endl;
 	cout << "The number of iteration is " << min_L_index << endl;
-	cout << "The Shortest route is£º " << endl << "start";
+	cout << "The Shortest route isï¿½ï¿½ " << endl << "start";
 
-	for (int i = 0; i < n; i++)		//ËùÓÐµü´úÖÐµÄ×îÓÅÂ·¾¶
+	for (int i = 0; i < n; i++)		//ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 	{
 		Shortest_Route[i] = R_best[min_L_index][i];
 		cout << " -> " << Shortest_Route[i];
@@ -163,9 +165,9 @@ find_min_path_and_draw(int iter) {
 }
 
 inline void
-ant_colony_optimization() {
+ant_colony_optimization(Graph& graph) {
 
-	initialize();
+	initialize(graph);
 	clock_t start, end, total;
 	int iter = 0;
 	total = 0;
@@ -187,7 +189,7 @@ ant_colony_optimization() {
 			}
 		}
 		vector<double> L;
-		calculate_path(L);
+		calculate_path(L, graph);
 		find_min_path(iter, L);
 		cout << iter << ": L_best is " << L_best[iter] << ' ' << "L_ave is " << L_avg[iter] << endl;
 		iter++;
@@ -201,8 +203,8 @@ ant_colony_optimization() {
 		find_min_path_and_draw(iter);
 }
 
-int main() {
-	initialize();
-	ant_colony_optimization();
+int SLS_ACO(Graph& graph) {
+	initialize(graph);
+	ant_colony_optimization(graph);
 	return 0;
 }
