@@ -4,6 +4,8 @@
  
  Traveling Salesman problem with BnB DFS and SLS (Ant Colony)
 
+## Note: Change the file name in main.cpp to your data file before compile!!!
+
 ## Compile:
     g++ main.cpp BnB.cpp SLS_ACO.cpp Graph.cpp -o main
 
